@@ -1,0 +1,23 @@
+data upload
+# Bitte geben Sie eine Commit-Beschreibung für Ihre Änderungen ein. Zeilen,
+# die mit '#' beginnen, werden ignoriert, und eine leere Beschreibung
+# bricht den Commit ab.
+#
+# Auf Branch main
+# Ihr Branch ist auf demselben Stand wie 'origin/main'.
+#
+# Zum Commit vorgemerkte Änderungen:
+#	neue Datei:     .gitignore
+#	neue Datei:     app/favicon.ico
+#	neue Datei:     app/fonts/GeistMonoVF.woff
+#	neue Datei:     app/fonts/GeistVF.woff
+#	neue Datei:     app/globals.css
+#	neue Datei:     app/layout.js
+#	neue Datei:     app/page.js
+#	neue Datei:     jsconfig.json
+#	neue Datei:     next.config.mjs
+#	neue Datei:     package-lock.json
+#	neue Datei:     package.json
+#	neue Datei:     postcss.config.mjs
+#	neue Datei:     tailwind.config.js
+#
