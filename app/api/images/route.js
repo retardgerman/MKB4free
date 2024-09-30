@@ -1,64 +1,27 @@
-import https from 'https';
+import { promises as fs } from 'fs';
+import path from 'path';
 
 export async function GET() {
-  const url = 'https://storage.googleapis.com/panels-api/data/20240916/media-1a-i-p~s';
-
   try {
-    const jsonData = await fetchJson(url);
-    if (!jsonData || !jsonData.data) {
-      throw new Error('Invalid data format');
-    }
+    // Pfad zur JSON-Datei im app-Verzeichnis
+    const filePath = path.join(process.cwd(), 'app', 'images.json');
+    
+    // Lese die JSON-Datei
+    const jsonData = await fs.readFile(filePath, 'utf-8');
+    
+    // Parse die JSON-Daten
+    const images = JSON.parse(jsonData);
 
-    const images = extractImages(jsonData.data);
+    // Gib die JSON-Daten als Response zurück
     return new Response(JSON.stringify(images), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json' }
     });
   } catch (error) {
-    console.error('Error fetching images:', error);
+    console.error('Error reading local JSON file:', error);
     return new Response(
-      JSON.stringify({ error: 'Failed to fetch images', details: error.message }),
+      JSON.stringify({ error: 'Failed to read images from local JSON' }),
       { status: 500 }
     );
   }
-}
-
-// Function to fetch JSON data from external API
-function fetchJson(url) {
-  return new Promise((resolve, reject) => {
-    https.get(url, (response) => {
-      let data = '';
-      response.on('data', (chunk) => {
-        data += chunk;
-      });
-
-      response.on('end', () => {
-        try {
-          resolve(JSON.parse(data));
-        } catch (err) {
-          reject(new Error('Failed to parse JSON'));
-        }
-      });
-    }).on('error', (err) => {
-      reject(err);
-    });
-  });
-}
-
-// Function to extract images from the API response
-function extractImages(data) {
-  const images = [];
-  for (const key in data) {
-    const subproperty = data[key];
-    if (subproperty) {
-      const imageFormats = {};
-      for (const format in subproperty) {
-        if (subproperty[format]) {
-          imageFormats[format] = subproperty[format];
-        }
-      }
-      images.push(imageFormats);
-    }
-  }
-  return images;
 }
