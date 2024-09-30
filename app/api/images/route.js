@@ -1,15 +1,25 @@
-// app/api/images/route.js
 import https from 'https';
 
-export async function GET(request) {
+export async function GET() {
   const url = 'https://storage.googleapis.com/panels-api/data/20240916/media-1a-i-p~s';
 
   try {
     const jsonData = await fetchJson(url);
+    if (!jsonData || !jsonData.data) {
+      throw new Error('Invalid data format');
+    }
+
     const images = extractImages(jsonData.data);
-    return new Response(JSON.stringify(images), { status: 200 });
+    return new Response(JSON.stringify(images), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
   } catch (error) {
-    return new Response(JSON.stringify({ error: 'Failed to fetch images' }), { status: 500 });
+    console.error('Error fetching images:', error);
+    return new Response(
+      JSON.stringify({ error: 'Failed to fetch images', details: error.message }),
+      { status: 500 }
+    );
   }
 }
 
@@ -21,8 +31,13 @@ function fetchJson(url) {
       response.on('data', (chunk) => {
         data += chunk;
       });
+
       response.on('end', () => {
-        resolve(JSON.parse(data));
+        try {
+          resolve(JSON.parse(data));
+        } catch (err) {
+          reject(new Error('Failed to parse JSON'));
+        }
       });
     }).on('error', (err) => {
       reject(err);
@@ -38,7 +53,9 @@ function extractImages(data) {
     if (subproperty) {
       const imageFormats = {};
       for (const format in subproperty) {
-        imageFormats[format] = subproperty[format];
+        if (subproperty[format]) {
+          imageFormats[format] = subproperty[format];
+        }
       }
       images.push(imageFormats);
     }
