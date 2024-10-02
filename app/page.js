@@ -11,7 +11,7 @@ export default function Home() {
   const [images, setImages] = useState([]);
   const [filteredImages, setFilteredImages] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [visibleImages, setVisibleImages] = useState(50); // Initially load 50 images
+  const [visibleImages, setVisibleImages] = useState(300); // Initially load 50 images
 
   // Image resolution for each format
   const imageSizes = {
