@@ -1,7 +1,8 @@
+// app/api/images/route.ts
 import { promises as fs } from 'fs';
 import path from 'path';
 
-export async function GET() {
+export async function GET(): Promise<Response> {
   try {
     // Pfad zur JSON-Datei im app-Verzeichnis
     const filePath = path.join(process.cwd(), 'app', 'images.json');

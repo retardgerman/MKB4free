@@ -1,8 +1,17 @@
-// components/DropdownMenu.js
+// components/DropdownMenu.tsx
 import { Menu, Transition } from '@headlessui/react';
-import { Fragment } from 'react';
+import { Fragment, ReactNode } from 'react';
 
-export function DropdownMenu({ children }) {
+// Typen für die Props der Dropdown-Komponenten definieren
+interface DropdownMenuProps {
+  children: ReactNode;
+}
+
+interface DropdownMenuItemProps {
+  children: ReactNode;
+}
+
+export function DropdownMenu({ children }: DropdownMenuProps) {
   return (
     <Menu as="div" className="relative inline-block text-left">
       {children}
@@ -10,7 +19,7 @@ export function DropdownMenu({ children }) {
   );
 }
 
-export function DropdownMenuTrigger({ children }) {
+export function DropdownMenuTrigger({ children }: DropdownMenuProps) {
   return (
     <Menu.Button>
       {children}
@@ -18,7 +27,7 @@ export function DropdownMenuTrigger({ children }) {
   );
 }
 
-export function DropdownMenuContent({ children }) {
+export function DropdownMenuContent({ children }: DropdownMenuProps) {
   return (
     <Transition
       as={Fragment}
@@ -36,7 +45,7 @@ export function DropdownMenuContent({ children }) {
   );
 }
 
-export function DropdownMenuItem({ children }) {
+export function DropdownMenuItem({ children }: DropdownMenuItemProps) {
   return (
     <Menu.Item>
       {({ active }) => (
